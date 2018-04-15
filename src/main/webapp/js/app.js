@@ -33,7 +33,14 @@ var app = new Framework7({
 
 var mainView = app.views.create('.view-main');
 
-
+// 登录
 function login(){
-	alert(3);
+	$.ajax({
+		url: 'test/jdbcTest2.do',
+		type: 'post',
+		data: {},
+		success: function(rst){
+			console.log(rst);
+		}
+	});
 }
