@@ -1,26 +1,57 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
-  <head>
-    <base href="<%=basePath%>">
-    
-    <title>My JSP 'index.jsp' starting page</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-  </head>
-  
-  <body>
-    This is my JSP page. <br>
-  </body>
+<head>
+<title>test</title>
+
+<!-- common jsp -->
+<jsp:include page="/util/baseJsp.jsp"></jsp:include>
+
+<!-- custom js -->
+
+
+</head>
+<body>
+	<!-- App root element -->
+	<div id="app">
+		<!-- Statusbar overlay -->
+		<div class="statusbar"></div>
+
+		<!-- Your main view, should have "view-main" class -->
+		<div class="view view-main">
+			<!-- Initial Page, "data-name" contains page name -->
+			<div data-name="home" class="page">
+
+				<!-- Top Navbar -->
+				<div class="navbar">
+					<div class="navbar-inner">
+						<div class="title">Awesome App</div>
+					</div>
+				</div>
+
+				<!-- Toolbar -->
+				<div class="toolbar">
+					<div class="toolbar-inner">
+						<!-- Toolbar links -->
+						<a href="#" class="link">Link 1</a> <a href="#" class="link">Link
+							2</a>
+					</div>
+				</div>
+
+				<!-- Scrollable page content -->
+				<div class="page-content">
+					<p>Page content goes here</p>
+					<!-- Link to another page -->
+					<a href="<%=request.getContextPath()%>/jsp/test/accordionTest.jsp">About app</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+	<!-- App routes -->
+  <script src="routes.js"></script>
+
+  <!-- Your custom app scripts -->
+  <script src="js/app.js"></script>
+
 </html>
