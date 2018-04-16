@@ -1,5 +1,6 @@
 package dcmsxcx.web.controller;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,18 @@ public class TestController {
         rstMap.put(WebConstant.RST_CODE, WebConstant.RST_SUCC);
 
         return new ModelAndView(new JsonView(), rstMap);
+    }
+    
+    
+    @RequestMapping("wxCode")
+    public ModelAndView wxCode(){
+        Map<String, Object> rstMap = new HashMap<String, Object>();
+        
+        return new ModelAndView(new JsonView(), rstMap);
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(URLEncoder.encode("http://wwp123.top:8083/dcmsxcx"));
     }
 
 }

@@ -223,15 +223,16 @@
 
 
 	<build>
+		<finalName>dcmsxcx</finalName>
+	
 		<plugins>
 			<plugin>
-				<artifactId>maven-war-plugin</artifactId>
-			</plugin>
-			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+					<showWarnings>true</showWarnings>
 				</configuration>
 			</plugin>
 		</plugins>

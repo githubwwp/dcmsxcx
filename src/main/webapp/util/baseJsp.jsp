@@ -16,10 +16,8 @@ var CONTEXTPATH = "<%=request.getContextPath()%>"; // 项目根目录
 </script>
 
 <!-- common css -->
-<link rel="stylesheet" href="<%=request.getContextPath()%>/jsframe/framework7/framework7.css">
 
 <!-- common js -->
-<script type="text/javascript" src="<%=request.getContextPath()%>/jsframe/framework7/framework7.js"></script>
 
 
 
