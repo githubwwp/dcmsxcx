@@ -13,6 +13,7 @@
 <script src="https://cdn.bootcss.com/jquery-weui/0.8.3/js/jquery-weui.min.js"></script>
 <script>
 var contextPath = "<%=request.getContextPath()%>"; // 项目根目录
+var code = '${param.code}';
 </script>
 
 <!-- custom js -->
