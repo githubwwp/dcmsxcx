@@ -11,12 +11,17 @@ public class WebConstant {
     /**
      * 返回成功
      */
-    public static final String RST_SUCC = "0000";
+    public static final String RST_SUCC = "00";
+
+    /**
+     * 返回状态码键
+     */
+    public static final String RST_CODE = "rst_code";
 
     /**
      * 返回信息键
      */
-    public static final String RST_CODE = "rstCode";
+    public static final String RST_MSG = "rst_msg";
 
     /**
      * 返回数据

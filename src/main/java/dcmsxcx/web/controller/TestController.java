@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import dcmsxcx.constant.QYWXConstant;
 import dcmsxcx.constant.WebConstant;
 import dcmsxcx.util.HttpUtil;
 import dcmsxcx.util.StringUtil;
@@ -31,7 +32,10 @@ public class TestController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    
+    /**
+     * 请求测试<p>
+     * 2018-4-17 by wwp
+     */
     @RequestMapping("jdbcTest2")
     public ModelAndView jdbcTest(@RequestParam Map<String, Object> map) {
         Map<String, Object> rstMap = new HashMap<String, Object>();
@@ -47,35 +51,36 @@ public class TestController {
         return new ModelAndView(new JsonView(), rstMap);
     }
     
-    
-    @RequestMapping("wxCode")
-    public ModelAndView wxCode(String code){
-        Map<String, Object> rstMap = new HashMap<String, Object>();
-        log.info("code: " + code);
-        // 获取token
-        String corpid = "wx5219bcf455d3f375";
-        String secret = "QADgRQHtkuIXaCZyPbHM7fRQroyxY2OKV97Y5fOUDyo";
-        String urlString = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid="+corpid+"&corpsecret="+secret;
-        String rstStr = HttpUtil.sendGet(urlString);
-        log.info(rstStr);
-        
-        // 获取用户信息
-        JSONObject json = JSONObject.fromObject(rstStr);
-        String access_token = json.getString("access_token");
-        String userUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token="+access_token+"&code="+code;
-        String userStr =HttpUtil.sendGet(userUrl);
-        log.info("userStr: " + userStr);
-        JSONObject json2 = JSONObject.fromObject(userStr);
-        String userId = json2.getString("UserId");
-        log.info("userId: "+ userId);
-        
-        rstMap.put("userId", userId);
-        
-        return new ModelAndView(new JsonView(), rstMap);
-    }
+    /**
+     * 获取企业用户微信
+     * 2018-4-17 by wwp
+     */
+//    @RequestMapping("wxCode")
+//    public ModelAndView wxCode(String code){
+//        Map<String, Object> rstMap = new HashMap<String, Object>();
+//        log.info("code: " + code);
+//        // 获取token
+//        String urlString = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid="+QYWXConstant.CORPID+"&corpsecret="+QYWXConstant.CORPSECRET;
+//        String rstStr = HttpUtil.sendGet(urlString);
+//        log.info(rstStr);
+//        
+//        // 获取用户信息
+//        JSONObject json = JSONObject.fromObject(rstStr);
+//        String access_token = json.getString("access_token");
+//        String userUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token="+access_token+"&code="+code;
+//        String userStr =HttpUtil.sendGet(userUrl);
+//        log.info("userStr: " + userStr);
+//        JSONObject json2 = JSONObject.fromObject(userStr);
+//        String userId = json2.getString("UserId");
+//        log.info("userId: "+ userId);
+//        
+//        rstMap.put("userId", userId);
+//        
+//        return new ModelAndView(new JsonView(), rstMap);
+//    }
     
     public static void main(String[] args) {
-        System.out.println(URLEncoder.encode("http://wwp123.top:8083/dcmsxcx"));
+        System.out.println(URLEncoder.encode("http://10.30.28.161:8082"));
     }
 
 }

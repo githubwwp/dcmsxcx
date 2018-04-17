@@ -22,9 +22,10 @@ import org.apache.http.util.EntityUtils;
 
 import dcmsxcx.constant.WebConstant;
 
-
 /**
- *
+ * http工具类
+ * @author wwp
+ * @date 2018-4-17
  */
 public class HttpUtil {
 
@@ -115,34 +116,5 @@ public class HttpUtil {
         return result;
     }
     
-    // 测试
-    public static void main(String[] args) {
-    	Map<String, String> map = new HashMap<String, String>();
-    	map.put("a", "233");
-    	map.put("b", "武汉");
-    	String str = HttpUtil.sendPost("http://localhost/dcmsxcx/test/jdbcTest2.do", map);
-    	JSONObject json = JSONObject.fromObject(str);
-    	System.out.println(JSONUtil.getStr(json, WebConstant.RST_CODE));
-    	System.out.println(str);
-    	
-//        Map<String, String> map = new HashMap<String, String>();
-//        map.put("appid", "wx4b74be6daadcd723");
-//        map.put("secret", "d2d297108246268ddcea011f0b4d3190");
-//        map.put("js_code", "003LFBFI1JjH090n9zFI1jDnFI1LFBFt");
-//        map.put("grant_type", "authorization_code");
-//        String rst = HttpUtil.sendPost("https://api.weixin.qq.com/sns/jscode2session", map);
-//        
-//        JSONObject jsonObj = JSONObject.fromObject(rst);
-//        for(Object o: jsonObj.keySet()){
-//            System.out.println(o + ": " + jsonObj.get(o));
-//        }
-//        String openId = null;
-//        try {
-//            openId = JSONUtil.getStr(jsonObj, "openid");
-//        } catch (JSONException e) {
-//            openId = null;
-//        }
-//        System.out.println(openId);
-    }
 
 }
