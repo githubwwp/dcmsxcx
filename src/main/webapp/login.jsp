@@ -29,7 +29,7 @@
 				<label class="weui-label">员工编号</label>
 			</div>
 			<div class="weui-cell__bd">
-				<input class="weui-input" type="number" id=username placeholder="请输入员工编号">
+				<input class="weui-input" id=username placeholder="请输入员工编号">
 			</div>
 		</div>
 		<div class="weui-cell">
@@ -43,7 +43,8 @@
 
 	</form>
 
-	<div class="weui-cells__title">表单报错</div>
+	<!-- 表单报错 -->
+	<div class="weui-cells__title"></div>
 
 	<div class="weui-btn-area">
 		<button class="weui-btn weui-btn_primary" onclick="doLogin()" id="loginBtn">确定</button>

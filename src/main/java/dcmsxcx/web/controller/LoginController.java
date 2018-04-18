@@ -3,6 +3,9 @@ package dcmsxcx.web.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import net.sf.json.JSONObject;
 import net.sf.json.spring.web.servlet.view.JsonView;
 
@@ -71,12 +74,15 @@ public class LoginController extends BaseController {
      * 2018-4-17 by wwp
      */
     @RequestMapping("doLogin")
-    public ModelAndView doLogin(String username, String password) {
+    public ModelAndView doLogin(String username, String password, HttpServletRequest request) {
         log.info("doLogin, username: " + username);
         Map<String, Object> rstMap = new HashMap<String, Object>();
         // 验证参数
         if(StringUtil.isNotBlank(username) && StringUtil.isNotBlank(password)){
             
+            // TODO
+            HttpSession session = request.getSession();
+            session.setAttribute("userId", Math.random() + "");
             rstMap.put(RST_CODE, RST_SUCC);
             rstMap.put(RST_MSG, "登录成功");
         } else{
@@ -85,6 +91,15 @@ public class LoginController extends BaseController {
         }
 
         return new ModelAndView(new JsonView(), rstMap);
+    }
+    
+    
+    @RequestMapping("logout.do")
+    public ModelAndView logout(HttpServletRequest request) { 
+        HttpSession session = request.getSession();
+        session.removeAttribute("userId"); // 移除用户属性
+        
+        return new ModelAndView("redirect:/login.jsp");
     }
     
     
