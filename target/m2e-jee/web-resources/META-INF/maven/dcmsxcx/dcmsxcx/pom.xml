@@ -223,7 +223,7 @@
 
 
 	<build>
-		<finalName>ROOT</finalName>
+		<!-- <finalName>ROOT</finalName> -->
 	
 		<plugins>
 			<plugin>

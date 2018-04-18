@@ -86,4 +86,30 @@ public class LoginController extends BaseController {
 
         return new ModelAndView(new JsonView(), rstMap);
     }
+    
+    
+    /**
+     * 帐号，密码验证
+     * 2018-4-18 by wwp
+     */
+    private boolean isAccountValid(String account, String password){
+        String dcmsUrl = "http://localhost:8080/dcms/iwap.ctrl";
+        Map<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("txcode", dcmsUrl);
+        paramMap.put("account", account);
+        paramMap.put("password", password);
+        
+        try{
+            String str = HttpUtil.sendGet(dcmsUrl);
+            JSONObject json = JSONObject.fromObject(str);
+            // TODO 判断是否成功
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+        
+    }
+    
+    
 }
