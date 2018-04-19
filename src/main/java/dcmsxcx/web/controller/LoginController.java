@@ -82,18 +82,22 @@ public class LoginController extends BaseController {
      * 2018-4-18 by wwp
      */
     private boolean isAccountValid(String account, String password){
-        String dcmsUrl = "http://localhost:8080/dcms/iwap.ctrl";
+        String dcmsUrl = "http://10.30.18.15:8080/dcms/iwap.ctrl";
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("txcode", "xcx1001");
         paramMap.put("account", account);
         paramMap.put("password", password);
         
-        try{
-            String str = HttpUtil.sendGet(dcmsUrl);
+        try{//TODO post请求失败
+            String paramUrl = "http://10.30.18.15:8080/dcms/iwap.ctrl?txcode=xcx1001&account="+account+"&password="+password;
+            String str = HttpUtil.sendPost(paramUrl);
             log.info(str);
             JSONObject json = JSONObject.fromObject(str);
-            // TODO 判断是否成功
-            return true;
+            JSONObject ret = json.getJSONObject("ret");
+            String rst_code = ret.getString("rst_code");
+            if("00".equals(rst_code)){
+                return true;
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
