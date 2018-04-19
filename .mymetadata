@@ -3,7 +3,7 @@
   type="WEB"
   name="dcmsxcx"
   id="myeclipse.1523501736441"
-  context-root="/dcmsxcx"
+  context-root="/ROOT"
   j2ee-spec="6.0"
   archive="dcmsxcx.war">
   <attributes>

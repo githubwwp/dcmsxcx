@@ -11,10 +11,6 @@
 <!-- custom js -->
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/login.js?v=<%=Math.random()%>"></script>
 
-<script>
-    var code = '${param.code}'; // 微信段参数
-</script>
-
 </head>
 
 <body>
@@ -29,7 +25,7 @@
 				<label class="weui-label">员工编号</label>
 			</div>
 			<div class="weui-cell__bd">
-				<input class="weui-input" id=username placeholder="请输入员工编号">
+				<input class="weui-input" id='username' placeholder="请输入员工编号">
 			</div>
 		</div>
 		<div class="weui-cell">
@@ -38,6 +34,14 @@
 			</div>
 			<div class="weui-cell__bd">
 				<input type="password" class="weui-input" id="password" placeholder="请输入密码">
+			</div>
+		</div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<label class="weui-label">userId</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input" id="userId" value="${param.userId}" readOnly>
 			</div>
 		</div>
 

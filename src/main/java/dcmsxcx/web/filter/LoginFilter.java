@@ -45,9 +45,14 @@ public class LoginFilter implements Filter {
         }
 
         // 开放地址
+        if((request.getContextPath()+"/").equals(requestUri)){
+            chain.doFilter(arg0, arg1);
+            return;
+        }
         List<String> openAddList = new ArrayList<String>();
         openAddList.add("/doLogin.do");
         openAddList.add("/login.jsp");
+        openAddList.add("/wechatLogin.do");
         for (String s : openAddList) {
             if (requestUri.indexOf(s) != -1) {
                 chain.doFilter(arg0, arg1);

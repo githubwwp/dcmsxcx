@@ -1,34 +1,28 @@
 $(function() {
-    // wxCode();
-});
 
-function wxCode() {
-    var url = theContextPath + '/login/getUserIdByCode.do';
-    ajaxFun(url, {}, function(data) {
-        alert("userId: " + data.userId);
-    });
-}
+});
 
 // 登录操作
 function doLogin() {
     var username = $("#username").val(); // 帐号
     var password = $("#password").val(); // 密码
+    var userId = $("#userId").val(); // 企业微信用户id
 
     // 验证参数
-    if (1/*username && password*/) { // TODO
+    if (username && password) {
         var datas = {
             username : username,
-            password : password
+            password : password,
+            userId : userId
         };
 
         // 登录操作
-        $("#loginBtn").attr("disabled", true); 
+        $("#loginBtn").attr("disabled", true);
         ajaxFun(theContextPath + '/login/doLogin.do', datas, function(rst) {
-            $("#loginBtn").attr("disabled", false); 
-            if(rst.rst_code == '00'){
-                // TODO 
-                window.location.href = theContextPath+"/index.jsp";
-            } else{
+            $("#loginBtn").attr("disabled", false);
+            if (rst.rst_code == '00') {
+                window.location.href = theContextPath + "/index.jsp";
+            } else {
                 $.toptip(rst.rst_msg, 'warning');
             }
         });

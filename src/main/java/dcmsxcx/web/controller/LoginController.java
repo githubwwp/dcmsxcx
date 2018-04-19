@@ -9,13 +9,14 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONObject;
 import net.sf.json.spring.web.servlet.view.JsonView;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import dcmsxcx.constant.QYWXConstant;
+import dcmsxcx.service.db.WechatRelaService;
+import dcmsxcx.service.manage.SessionManaService;
 import dcmsxcx.util.HttpUtil;
 import dcmsxcx.util.StringUtil;
 
@@ -24,49 +25,12 @@ import dcmsxcx.util.StringUtil;
 @RequestMapping("login")
 @Scope("prototype")
 public class LoginController extends BaseController {
-
-    /**
-     * 根据code 获取用户信息 2018-4-17 by wwp
-     */
-    @RequestMapping("getUserIdByCode")
-    public ModelAndView getUserIdByCode(@RequestParam Map<String, String> parMap) {
-        Map<String, Object> rstMap = new HashMap<String, Object>();
-        String code = parMap.get("code");
-        log.info("getUserIdByCode, code: " + code);
-        // 判断code是否为空
-        if (StringUtil.isNotBlank(code)) {
-            try {
-                // 获取access_token
-                String tokenUrl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + QYWXConstant.CORPID + "&corpsecret="
-                        + QYWXConstant.CORPSECRET;
-                String tokenReturnStr = HttpUtil.sendGet(tokenUrl);
-                log.info("获取access_token返回字符串：" + tokenReturnStr);
-                JSONObject tokenJson = JSONObject.fromObject(tokenReturnStr);
-                String access_token = tokenJson.getString("access_token");
-
-                // 获取用户信息
-                String userUrl = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=" + access_token + "&code=" + code;
-                String userReturnStr = HttpUtil.sendGet(userUrl);
-                log.info("获取用户信息返回字符串: " + userReturnStr);
-                JSONObject userJson = JSONObject.fromObject(userReturnStr);
-                String userId = userJson.getString("UserId");
-
-                rstMap.put("userId", userId);
-                rstMap.put(RST_CODE, RST_SUCC);
-                rstMap.put(RST_MSG, "获取成功");
-            } catch (Exception e) {
-                e.printStackTrace();
-                rstMap.put(RST_CODE, "01");
-                rstMap.put(RST_MSG, "code获取失败");
-            }
-        } else {
-            rstMap.put(RST_CODE, "01");
-            rstMap.put(RST_MSG, "code为空");
-        }
-
-        log.info("rstMap: " + rstMap);
-        return new ModelAndView(new JsonView(), rstMap);
-    }
+    
+    @Autowired
+    private SessionManaService sessionManaService;
+    
+    @Autowired
+    private WechatRelaService wechatRelaService;
     
     
     /**
@@ -74,17 +38,25 @@ public class LoginController extends BaseController {
      * 2018-4-17 by wwp
      */
     @RequestMapping("doLogin")
-    public ModelAndView doLogin(String username, String password, HttpServletRequest request) {
+    public ModelAndView doLogin(String username, String password, String userId, HttpServletRequest request) {
         log.info("doLogin, username: " + username);
+        HttpSession session = request.getSession();
         Map<String, Object> rstMap = new HashMap<String, Object>();
         // 验证参数
         if(StringUtil.isNotBlank(username) && StringUtil.isNotBlank(password)){
             
-            // TODO
-            HttpSession session = request.getSession();
-            session.setAttribute("userId", Math.random() + "");
-            rstMap.put(RST_CODE, RST_SUCC);
-            rstMap.put(RST_MSG, "登录成功");
+            boolean isAccount = this.isAccountValid(username, password); // 登录验证
+            if(isAccount){
+                sessionManaService.setSessionByAccountId(username, session);
+                // 同步企业微信和 易汇帐号关系
+                wechatRelaService.addOrEditRela(userId, username);
+                
+                rstMap.put(RST_CODE, RST_SUCC);
+                rstMap.put(RST_MSG, "登录成功");
+            } else{
+                rstMap.put(RST_CODE, "01");
+                rstMap.put(RST_MSG, "帐号或密码错误!");
+            }
         } else{
             rstMap.put(RST_CODE, "01");
             rstMap.put(RST_MSG, "请输入帐号或密码");
@@ -93,7 +65,10 @@ public class LoginController extends BaseController {
         return new ModelAndView(new JsonView(), rstMap);
     }
     
-    
+    /**
+     * 登出
+     * 2018-4-19 by wwp
+     */
     @RequestMapping("logout.do")
     public ModelAndView logout(HttpServletRequest request) { 
         HttpSession session = request.getSession();
@@ -102,7 +77,6 @@ public class LoginController extends BaseController {
         return new ModelAndView("redirect:/login.jsp");
     }
     
-    
     /**
      * 帐号，密码验证
      * 2018-4-18 by wwp
@@ -110,12 +84,13 @@ public class LoginController extends BaseController {
     private boolean isAccountValid(String account, String password){
         String dcmsUrl = "http://localhost:8080/dcms/iwap.ctrl";
         Map<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put("txcode", dcmsUrl);
+        paramMap.put("txcode", "xcx1001");
         paramMap.put("account", account);
         paramMap.put("password", password);
         
         try{
             String str = HttpUtil.sendGet(dcmsUrl);
+            log.info(str);
             JSONObject json = JSONObject.fromObject(str);
             // TODO 判断是否成功
             return true;
@@ -123,8 +98,6 @@ public class LoginController extends BaseController {
             e.printStackTrace();
         }
         return false;
-        
     }
-    
     
 }
